@@ -1,0 +1,27 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Ghostwriting engine test</title>
+<pre id="out">running…</pre>
+<script type="module">
+  import { scanPdf } from "./assets/js/scan-pdf.js";
+  import { scanHtml } from "./assets/js/scan-html.js";
+  import { rules } from "./assets/js/judge.js";
+  import { webgpu } from "./assets/js/gemma.js";
+  const out = document.getElementById("out");
+  const log = (s) => (out.textContent += "\n" + s);
+  out.textContent = "";
+  window.results = {};
+  for (const f of ["paper.pdf", "resume.pdf"]) {
+    const t0 = performance.now();
+    const r = await scanPdf(await (await fetch("samples/" + f)).arrayBuffer());
+    log(`== ${f}: ${r.ghosts.length} ghosts in ${Math.round(performance.now() - t0)} ms`);
+    for (const g of r.ghosts) log(`   [${g.how.join(", ")}] ${g.text}  -> ${JSON.stringify(rules(g.text).hits)}`);
+    window.results[f] = r.ghosts;
+  }
+  const h = await scanHtml(await (await fetch("samples/job-post.html")).text());
+  log(`== job-post.html: ${h.ghosts.length} ghosts`);
+  for (const g of h.ghosts) log(`   [${g.how.join(", ")}] ${g.text}  -> ${JSON.stringify(rules(g.text).hits)}`);
+  window.results.html = h.ghosts;
+  log("\nWebGPU: " + JSON.stringify(await webgpu()));
+  window.done = true;
+</script>

@@ -1,0 +1,1177 @@
+[
+  {
+    "id": "2610.37657",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37657v1",
+    "title": "Heads of Security: Learned Attention Gates Improve Prompt Injection Robustness",
+    "query_category": "cs.CL",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:58:52Z",
+    "file": "clean/2610.37657v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37651",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37651v1",
+    "title": "GEPA-Curator: Curated Learning for Self Improving Agents",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T17:58:11Z",
+    "file": "clean/2610.37651v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37649",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37649v1",
+    "title": "Can LLMs Uncover Hidden Physical Laws through Free Exploration?",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T17:57:00Z",
+    "file": "clean/2610.37649v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 19,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 1,
+      "examples": [],
+      "would_naively_flag": [
+        "injection_keywords"
+      ]
+    },
+    "false_positive_note": "visible body text says 'An LLM reviewer checks the program' (p.4): a keyword-only detector trap, nothing hidden",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37645",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37645v1",
+    "title": "Multi-State Linear Attention with Generalized Second-Order Routing",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T17:55:49Z",
+    "file": "clean/2610.37645v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 3,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37642",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37642v1",
+    "title": "Metacognitive Decoding: Efficient Inference for Diffusion Language Agents",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T17:55:24Z",
+    "file": "clean/2610.37642v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37624",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37624v1",
+    "title": "Rare, Relevant, and Still Wrong: How Memory Fails LLM Group Decisions",
+    "query_category": "cs.CL",
+    "primary_category": "cs.AI",
+    "published": "2026-10-27T17:49:39Z",
+    "file": "clean/2610.37624v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 26,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37609",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37609v1",
+    "title": "EnvSched: Environment-Aware Scheduling for Rollout-Efficient Agent Reinforcement Learning",
+    "query_category": "cs.CL",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:38:52Z",
+    "file": "clean/2610.37609v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 6,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37494",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37494v1",
+    "title": "semanticfa: An R Package for Response-Free Semantic Factor Analysis of Psychometric Scales",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T16:18:44Z",
+    "file": "clean/2610.37494v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37484",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37484v1",
+    "title": "Teach reality, not ethics: a drop-in continued-pretraining corpus installs coupled human-biosphere-AI welfare dispositions across model families",
+    "query_category": "cs.CL",
+    "primary_category": "cs.CL",
+    "published": "2026-10-27T16:11:04Z",
+    "file": "clean/2610.37484v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37481",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37481v1",
+    "title": "Follow the Gradient: Tracing Safety Degradation Back to Training Data",
+    "query_category": "cs.CL",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T16:08:08Z",
+    "file": "clean/2610.37481v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 1,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37668",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37668v1",
+    "title": "Honeycomb-Surfels: Compact Hexagonal Primitives for Efficient Scene Rendering and Reconstruction",
+    "query_category": "cs.LG",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:59:59Z",
+    "file": "clean/2610.37668v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 351,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37658",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37658v1",
+    "title": "When Should We Intervene at Test Time?",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:58:53Z",
+    "file": "clean/2610.37658v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 18,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 3,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 6.97,
+          "text": "̸"
+        },
+        {
+          "page": 3,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 6.97,
+          "text": "̸"
+        },
+        {
+          "page": 4,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 21,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37656",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37656v1",
+    "title": "Attention as Lattice Gauge Theory: Relations Interact Only Through Wilson Loops",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:58:48Z",
+    "file": "clean/2610.37656v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 1,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 3,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37652",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37652v1",
+    "title": "Pushing Dexterity and Safety for In-Hand Object Pose Reaching That Works Remarkably Well",
+    "query_category": "cs.LG",
+    "primary_category": "cs.RO",
+    "published": "2026-10-27T17:58:20Z",
+    "file": "clean/2610.37652v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 46,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37648",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37648v1",
+    "title": "Scaling Laws for Tool-Use Agents via Controllable Environment Synthesis",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:56:46Z",
+    "file": "clean/2610.37648v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 192,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37647",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37647v1",
+    "title": "MuonGS: Pretraining LLMs with Relaxed Weight-Norm Control",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:56:40Z",
+    "file": "clean/2610.37647v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 2,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 8,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 18,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37598",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37598v1",
+    "title": "GAS-PFN: Graph-Aware Spatiotemporal Prior-Data Fitted Networks for Zero-Shot Traffic Forecasting",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:31:26Z",
+    "file": "clean/2610.37598v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 4,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 13,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 13,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 13,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 15,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37588",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37588v1",
+    "title": "Understanding the limits of latent world models",
+    "query_category": "cs.LG",
+    "primary_category": "cs.LG",
+    "published": "2026-10-27T17:25:50Z",
+    "file": "clean/2610.37588v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37583",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37583v1",
+    "title": "Zero-Shot Multimodal Event Spotting in Soccer Broadcasts",
+    "query_category": "cs.LG",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:24:35Z",
+    "file": "clean/2610.37583v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37580",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37580v1",
+    "title": "Spectral Braids: A Topological Descriptor for Dynamic Directed Networks",
+    "query_category": "cs.LG",
+    "primary_category": "cs.SI",
+    "published": "2026-10-27T17:21:19Z",
+    "file": "clean/2610.37580v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 2,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 3,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 3,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37666",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37666v1",
+    "title": "ThinkWorld: World Imagination Reinforces Chain-of-Dynamics Reasoning",
+    "query_category": "cs.CV",
+    "primary_category": "cs.RO",
+    "published": "2026-10-27T17:59:52Z",
+    "file": "clean/2610.37666v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 58,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37662",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37662v1",
+    "title": "Can Discrete Tokens Serve as Semantically Lossless Representations of Visual Signals?",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:59:22Z",
+    "file": "clean/2610.37662v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 2,
+      "white_on_fill_or_image": 11,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 2,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 5,
+          "why": "off-page",
+          "color": "#25272A",
+          "size": 7.78,
+          "text": "̂"
+        },
+        {
+          "page": 5,
+          "why": "off-page",
+          "color": "#25272A",
+          "size": 5.9,
+          "text": "̂"
+        },
+        {
+          "page": 5,
+          "why": "white on page background",
+          "color": "#FFFFFF",
+          "size": 4.57,
+          "text": "76.6"
+        },
+        {
+          "page": 5,
+          "why": "white on page background",
+          "color": "#FFFFFF",
+          "size": 4.56,
+          "text": "62.4"
+        }
+      ],
+      "would_naively_flag": [
+        "white_on_background",
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "legit white text: numeric labels on coloured chart bars (p.5, 4.6pt) and white category badges (p.20-21); the fill behind them is not a simple vector rect, so a naive background check calls it white-on-white; off-page spans are combining accents (U+0302) with zero-width bboxes (empty-rect artefact, not off-page)",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37633",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37633v1",
+    "title": "Repurposing Video Diffusion Transformers for Cross-View Temporal Object Correspondence",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:53:34Z",
+    "file": "clean/2610.37633v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 11,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 1,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 17,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 8.97,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37626",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37626v1",
+    "title": "Know, then Draw: A New Learning Paradigm for Visual Generation",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:50:20Z",
+    "file": "clean/2610.37626v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37619",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37619v1",
+    "title": "Perceiving and Predicting Dynamic Sports: Spatiotemporal Intelligence in Vision Models for Egocentric Tennis Video",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:47:14Z",
+    "file": "clean/2610.37619v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 1,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37613",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37613v1",
+    "title": "VideoLVR: Latent Visual Reasoning over Grounded Video Evidence",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:41:56Z",
+    "file": "clean/2610.37613v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37599",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37599v1",
+    "title": "MoI-Bench: A Benchmark for Image Generation and Editing on Mobile Devices",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:31:40Z",
+    "file": "clean/2610.37599v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 101,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 45,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 27,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "Table 14:"
+        },
+        {
+          "page": 27,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "Operation"
+        },
+        {
+          "page": 27,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": " ×"
+        },
+        {
+          "page": 27,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 8.35,
+          "text": "Operation"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "not really off-page: p.27 is a landscape page (/Rotate 90); span bboxes are in unrotated space (612x792) while page.rect is rotated (792x612), so 45 spans of Table 14 look off-page. Compare against page.mediabox or apply page.rotation_matrix",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37579",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37579v1",
+    "title": "As the Story Unfolds: Watching a Film and Identifying Characters as a Human Does",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:20:44Z",
+    "file": "clean/2610.37579v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37576",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37576v1",
+    "title": "The Noise Plane: A Diffusion Bridge Across Exponent and Dispersion",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:19:45Z",
+    "file": "clean/2610.37576v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 8,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 1,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 21,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37566",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37566v1",
+    "title": "ReferStream: Interactive Subject Injection for Streaming Video Generation",
+    "query_category": "cs.CV",
+    "primary_category": "cs.CV",
+    "published": "2026-10-27T17:12:42Z",
+    "file": "clean/2610.37566v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 138,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37655",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37655v1",
+    "title": "KPPax: preprocess differentiable kinetic ODE for machine learning in atmospheric chemistry",
+    "query_category": "cs.AI",
+    "primary_category": "cs.AI",
+    "published": "2026-10-27T17:58:40Z",
+    "file": "clean/2610.37655v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37631",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37631v1",
+    "title": "What Improves During Pretraining? Tracking Knowledge Acquisition with Point-in-Time Models",
+    "query_category": "cs.AI",
+    "primary_category": "cs.AI",
+    "published": "2026-10-27T17:52:38Z",
+    "file": "clean/2610.37631v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37605",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37605v1",
+    "title": "Beyond Answer Changes: Matched Same-Class Controls for Local Audio Evidence",
+    "query_category": "cs.AI",
+    "primary_category": "cs.SD",
+    "published": "2026-10-27T17:36:06Z",
+    "file": "clean/2610.37605v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37635",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37635v1",
+    "title": "Classical Verification of Quantum Computation Beyond the Polynomial Hierarchy",
+    "query_category": "cs.CR",
+    "primary_category": "quant-ph",
+    "published": "2026-10-27T17:54:01Z",
+    "file": "clean/2610.37635v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 23,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 5,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 10.91,
+          "text": "̸"
+        },
+        {
+          "page": 5,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 10.91,
+          "text": "̸"
+        },
+        {
+          "page": 7,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 10.91,
+          "text": "̸"
+        },
+        {
+          "page": 8,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 10.91,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37488",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37488v1",
+    "title": "Revisiting Privacy Risks in Quantized Deep Neural Networks",
+    "query_category": "cs.CR",
+    "primary_category": "cs.CR",
+    "published": "2026-10-27T16:14:21Z",
+    "file": "clean/2610.37488v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37474",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37474v1",
+    "title": "When POST Becomes GET: Investigating HTTP Method Interchangeability and Its Security Implications",
+    "query_category": "cs.CR",
+    "primary_category": "cs.CR",
+    "published": "2026-10-27T16:05:34Z",
+    "file": "clean/2610.37474v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [],
+      "would_naively_flag": []
+    },
+    "false_positive_note": null,
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37467",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37467v1",
+    "title": "Penny for Your Prompts: A Measurement Study of Contextual Leakage in AI Chat Platforms",
+    "query_category": "cs.CR",
+    "primary_category": "cs.CR",
+    "published": "2026-10-27T16:01:08Z",
+    "file": "clean/2610.37467v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 17,
+      "tiny_lt2pt": 1,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 0,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 6,
+          "why": "tiny 0.31pt",
+          "color": "#262626",
+          "size": 0.31,
+          "text": "Tracker owner"
+        }
+      ],
+      "would_naively_flag": [
+        "tiny_lt2pt"
+      ]
+    },
+    "false_positive_note": "legit tiny text: a figure label 'Tracker owner' scaled to 0.31pt inside an embedded figure (p.6)",
+    "expected_label": "clean"
+  },
+  {
+    "id": "2610.37454",
+    "version": "v1",
+    "url": "https://arxiv.org/pdf/2610.37454v1",
+    "title": "SecDMP: Provably Secure Data Memory-Dependent Prefetching (Extended Version)",
+    "query_category": "cs.CR",
+    "primary_category": "cs.CR",
+    "published": "2026-10-27T15:55:43Z",
+    "file": "clean/2610.37454v1.pdf",
+    "hidden_looking": {
+      "white_on_background": 0,
+      "white_on_fill_or_image": 0,
+      "tiny_lt2pt": 0,
+      "render_mode_3_chars": 0,
+      "off_page_spans": 26,
+      "zero_width_chars": 0,
+      "tag_chars": 0,
+      "injection_keywords": 0,
+      "examples": [
+        {
+          "page": 7,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 7.97,
+          "text": "̸"
+        },
+        {
+          "page": 16,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 19,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        },
+        {
+          "page": 19,
+          "why": "off-page",
+          "color": "#000000",
+          "size": 9.96,
+          "text": "̸"
+        }
+      ],
+      "would_naively_flag": [
+        "off_page_spans"
+      ]
+    },
+    "false_positive_note": "off-page spans are U+0338 COMBINING LONG SOLIDUS OVERLAY (LaTeX \\not, e.g. a slashed = or \\in); the glyph has a zero-width bbox (x0 == x1, inside the page) and pymupdf Rect.intersects() is False for empty rects, so a naive off-page test flags it",
+    "expected_label": "clean"
+  }
+]

@@ -1,0 +1,7 @@
+# Third-party arXiv PDFs: not ours to redistribute. Keep only the manifests;
+# re-download from the URLs listed in each manifest.json.
+real/*.pdf
+clean/*.pdf
+!real/manifest.json
+!clean/manifest.json
+__pycache__/

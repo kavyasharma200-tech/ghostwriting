@@ -1,0 +1,47 @@
+/* Ghostwriting tokens. One world: a sheet of paper in a dark study, and a candle.
+   Concept drill: 1 security dashboard, 2 green-on-black terminal, 3 UV blacklight, 4 a séance board,
+   5 lemon-juice ink brought out by a candle (built). Reference why: Getty's "Tracing Art" (Awwwards SOTD):
+   one real document held at the centre while its story is told around it, and the record is the visual.
+   Palette drill: 1 purple + neon green on black (the Halloween default), 2 pumpkin + charcoal, 3 the
+   reference's gallery white, 4 candle soot, ash and scorch (built), 5 the product itself: a PDF's white page,
+   which is also the colour of the ghost. Soot leads, ash supports, scorch (the brown lemon-juice ink turns when
+   it is heated) is the one accent, kept to the revealed words and the main action. Documents keep their own
+   white: it is evidence, not decoration. */
+@import url("fonts/fonts.css");
+
+:root {
+  --soot-50: oklch(0.97 0.006 60);  --soot-100: oklch(0.93 0.009 60); --soot-200: oklch(0.85 0.013 60);
+  --soot-300: oklch(0.74 0.017 60); --soot-400: oklch(0.62 0.019 60); --soot-500: oklch(0.5 0.019 60);
+  --soot-600: oklch(0.4 0.017 60);  --soot-700: oklch(0.31 0.015 60); --soot-800: oklch(0.23 0.013 60);
+  --soot-900: oklch(0.17 0.011 60); --soot-950: oklch(0.125 0.009 60);
+
+  --ash-50: oklch(0.975 0.007 115);  --ash-100: oklch(0.94 0.011 115); --ash-200: oklch(0.88 0.016 115);
+  --ash-300: oklch(0.8 0.02 115);    --ash-400: oklch(0.7 0.022 115);  --ash-500: oklch(0.6 0.021 115);
+  --ash-600: oklch(0.5 0.019 115);   --ash-700: oklch(0.4 0.016 115);
+
+  --scorch-100: oklch(0.93 0.035 52); --scorch-200: oklch(0.86 0.07 52); --scorch-300: oklch(0.78 0.11 52);
+  --scorch-400: oklch(0.7 0.135 52);  --scorch-500: oklch(0.62 0.145 50); --scorch-600: oklch(0.53 0.13 48);
+  --scorch-700: oklch(0.44 0.11 46);  --scorch-800: oklch(0.35 0.08 44);
+
+  --display: "EB Garamond", "Iowan Old Style", Georgia, serif;
+  --body: "Hanken Grotesk", system-ui, sans-serif;
+  --mono: "Fragment Mono", ui-monospace, Consolas, monospace;
+
+  /* Slow and warm: things arrive like a flame catching, never snapping. */
+  --ease: cubic-bezier(.22, 1, .36, 1);
+  --ease-sheet: cubic-bezier(.76, 0, .24, 1);
+  --ease-jelly: cubic-bezier(.34, 1.56, .64, 1);
+  --t-s: .4s; --t-m: .8s; --t-l: 1.3s;
+  --r-control: 12px; --r-card: 18px; --r-panel: 26px;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; background: var(--soot-950); }
+body { margin: 0; background: var(--soot-950); color: var(--ash-100); font: 17px/1.55 var(--body); }
+::selection { background: var(--scorch-300); color: var(--soot-950); }
+:focus-visible { outline: 2px solid var(--scorch-300); outline-offset: 3px; border-radius: 6px; }
+button, input { font: inherit; color: inherit; }
+img, canvas, svg { display: block; max-width: 100%; }
+a { color: inherit; }
+[hidden] { display: none !important; }
+.sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }

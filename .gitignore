@@ -1,0 +1,4 @@
+# Raw runner logs; the summary the site reads is site/eval-results.json.
+eval/run-*.txt
+__pycache__/
+.DS_Store

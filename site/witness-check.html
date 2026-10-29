@@ -1,0 +1,31 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Witness check</title>
+<!-- Drives the real page: opens each sample, presses "Wake Gemma and ask it", and reports what the page shows.
+     node tools/run.mjs "http://localhost:8790/witness-check.html" --timeout 1200000 -->
+<style>body{margin:0}pre{position:absolute;left:-9999px}</style>
+<pre id="out"></pre>
+<script type="module">
+  const out = document.getElementById("out");
+  const log = (s) => { out.textContent += s + "\n"; console.log(s); };
+  const wait = async (f, ms = 900000) => { const t = Date.now(); while (Date.now() - t < ms) { const v = f(); if (v) return v; await new Promise((r) => setTimeout(r, 500)); } throw new Error("timed out"); };
+  const rows = [];
+  for (const sample of (new URLSearchParams(location.search).get("only") || "paper,resume,job").split(",")) {
+    const f = document.createElement("iframe");
+    f.style.cssText = "width:1440px;height:900px;border:0";
+    f.src = `index.html?shot=${sample}`;
+    document.body.append(f);
+    await new Promise((r) => (f.onload = r));
+    const d = f.contentDocument;
+    const btn = await wait(() => { const b = d.querySelector("[data-witness-run]"); return b && !b.hidden && b; }, 240000);
+    log(`${sample}: ${d.querySelector("[data-say]").textContent} | ${d.querySelector("[data-sub]").textContent}`);
+    btn.click();
+    await wait(() => !/…/.test(d.querySelector("[data-g2n]").textContent) || /couldn't run/.test(d.querySelector("[data-witness-note]").textContent));
+    const row = { sample, haunted: d.querySelector("[data-g1n]").textContent, clean: d.querySelector("[data-g2n]").textContent, note: d.querySelector("[data-witness-note]").textContent };
+    rows.push(row);
+    log(`${sample}: with ${row.haunted}, without ${row.clean} | ${row.note}`);
+    if (!new URLSearchParams(location.search).get("keep")) f.remove();
+  }
+  window.report = JSON.stringify(rows);
+  window.done = true;
+</script>

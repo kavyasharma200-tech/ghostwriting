@@ -20,7 +20,7 @@ So Ghostwriting does four jobs, each built on open pieces:
 - **It holds a candle to any document.** Drop in a PDF, a saved web page or a text file and it draws every page the way you see it, checks each line an AI would receive against the ink actually on the page, and lets you move a candle over the paper while the hidden words brown in where the flame passes. Nothing is uploaded: pdf.js reads the file in your tab.
 - **It measures the ghost with Gemma.** Gemma 3 1B runs on your own graphics card through Transformers.js and WebGPU, reads the document twice, once as an AI receives it and once with the ghosts taken out, and the page shows Gemma's own probability of answering "Accept" both times.
 - **It learned what a real ghost looks like with TabPFN.** At scale, papers are full of text that *looks* hidden, like chart labels on dark boxes or maths symbols, and my first rules mistook some of it for instructions. A TabPFN classifier, trained on 1,425 measured runs of hidden-looking text, now tells the two apart (it catches 98% of disguised instructions it never saw, against 40% for my rules, and wrongly flags 0.6% of innocent look-alikes, against 25%).
-- **It reads the world, every morning.** I scanned CENSUS_N new arXiv papers in AI and security from the last days of October 2026 (CENSUS_PAGES pages), and a GitHub Action, Ghost Watch, keeps reading each day's new papers on its own.
+- **It reads the world, every morning.** I scanned 1,041 new arXiv papers in AI and security from the last days of October 2026 (25,508 pages), and a GitHub Action, Ghost Watch, keeps reading each day's new papers on its own.
 
 ## Demo
 
@@ -69,11 +69,11 @@ The study that followed the news listed eighteen papers, and sixteen are still o
 
 ### Which open models obey?
 
-LEADERBOARD_PARAGRAPH
+I gave the sixteen real papers to more open models through Ollama, reading each one's own probability of "Accept" from its logprobs. The most striking result is Gemma 3 4B: it is a far stricter reviewer than the 1B model, with a median 4.6% chance of accepting these papers as a person sees them, and the hidden sentence still takes it to a median of 100%, pushing it up on 12 of the 16. A bigger model judged the papers more harshly, and was just as easy to haunt. Gemma 3 1B and Qwen 2.5 1.5B, given a longer opening in Ollama, already accept nearly everything (98.8% and 97.0%), so the ghost has little room to move them, and I'd rather show that than hide it.
 
 ### Reading this October
 
-I wanted to know whether this stopped after 2025, so I scanned every new paper in machine learning, vision, language, robotics, human-computer interaction, software engineering and security that went up on arXiv in the last days of October 2026, at arXiv's own pace of one request every three seconds, reading each PDF in memory and throwing it away. CENSUS_PARAGRAPH
+I wanted to know whether this stopped after 2025, so I scanned every new paper in machine learning, vision, language, robotics, human-computer interaction, software engineering and security that went up on arXiv in the last days of October 2026, at arXiv's own pace of one request every three seconds, reading each PDF in memory and throwing it away. By the time I published, it had read 1,041 papers from 27 to 29 October, 25,508 pages in all. Not one of them was hiding a sentence for an AI. My plain rules did flag three, and every one was a label in a figure that happened to name a model ("Gemini 3.8 Flash" set off the page, a 1.2 pt chart legend listing GPT and Claude), which is exactly the kind of false alarm TabPFN learned to set aside: it flagged none of them.
 
 ![The census chapter: a wall with one tile for every paper read, the count, and what was found.](https://raw.githubusercontent.com/kavyasharma200-tech/ghostwriting/main/docs/census.jpg)
 
@@ -96,7 +96,7 @@ The census doesn't stop when my laptop sleeps. A scheduled GitHub Action reads t
 | Real 2025 cases | the 16 arXiv preprints still online in their haunted versions | **16 of 16** found and recognised as talking to an AI |
 | Planted | one instruction hidden in a research abstract, a résumé and an essay in each of eight ways, plus seven in three web pages, with four honest controls | **24 of 24** PDF and **7 of 7** web-page tricks found and recognised, **0** flags on the controls |
 | Ordinary | 38 recent arXiv papers labelled by hand | **0 of 38** flagged as talking to an AI |
-| October 2026 | CENSUS_N new papers, scanned by the census | CENSUS_RESULT |
+| October 2026 | 1,041 new papers, scanned by the census | **0** hiding a sentence for an AI; the rules' 3 flags were all figure labels, and TabPFN flagged none |
 
 ### Design
 
@@ -116,6 +116,6 @@ Halloween is the one night we agree to look for things that aren't there, and th
 
 ## Prize Categories
 
-- **Best Use of Gemma:** Gemma 3 1B runs entirely in the browser on WebGPU through Transformers.js as a measured witness, a single forward pass whose own probability of "Accept" shows how much a hidden sentence changes its verdict, and on all 16 real haunted arXiv papers that sentence lifted it to at least 98.5%, from a median of 30%. GEMMA_PRIZE_EXTRA
+- **Best Use of Gemma:** Gemma 3 1B runs entirely in the browser on WebGPU through Transformers.js as a measured witness, a single forward pass whose own probability of "Accept" shows how much a hidden sentence changes its verdict, and on all 16 real haunted arXiv papers that sentence lifted it to at least 98.5%, from a median of 30%. Gemma 3 4B, run locally through Ollama, shows that size doesn't protect it: a much stricter reviewer at a median 4.6%, taken to 100% by the same hidden line.
 - **Best Use of TabPFN:** TabPFN-3.5 (hosted, through tabpfn-client) sits inside the census pipeline as the classifier that decides, from 63 measurements of each hidden-looking run, whether it is an instruction for an AI or innocent clutter; on 286 disguised instructions it never saw it caught 98% to my rules' 40%, all 60 non-English ones to the rules' 10%, and it cut false alarms on innocent look-alikes from 25% to 0.6%.
 - **Best Use of GitHub Copilot:** Ghost Watch is a scheduled GitHub Actions workflow that reads the previous day's new arXiv papers in AI and security for hidden reviewer prompts every morning, publishes the tally to the site and redeploys it through a second workflow, so the census keeps running without anyone at the keyboard.

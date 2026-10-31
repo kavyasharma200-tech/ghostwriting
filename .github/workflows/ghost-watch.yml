@@ -28,10 +28,16 @@ jobs:
       - run: pip install pymupdf
       - name: Read the day's papers
         run: |
-          DAY="${{ github.event.inputs.day }}"
-          [ -z "$DAY" ] && DAY=$(date -u -d "yesterday" +%F)
+          # arXiv's search index runs a day or two behind, so step back to the latest day that has papers.
+          LIMIT="${{ github.event.inputs.limit || '250' }}"
+          if [ -n "${{ github.event.inputs.day }}" ]; then DAYS="${{ github.event.inputs.day }}"; else DAYS="$(for n in 1 2 3 4; do date -u -d "$n days ago" +%F; done)"; fi
+          for DAY in $DAYS; do
+            rm -f census/day.jsonl census/day.listing.json
+            python census/crawl.py --since "$DAY" --until "$DAY" --out census/day.jsonl --limit "$LIMIT"
+            if [ -s census/day.jsonl ]; then break; fi
+            echo "nothing indexed for $DAY yet"
+          done
           echo "DAY=$DAY" >> "$GITHUB_ENV"
-          python census/crawl.py --since "$DAY" --until "$DAY" --out census/day.jsonl --limit "${{ github.event.inputs.limit || '250' }}"
       - name: Publish the tally
         run: |
           python census/daily.py census/day.jsonl "$DAY"

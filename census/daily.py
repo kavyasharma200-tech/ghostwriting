@@ -28,7 +28,8 @@ entry = {
 }
 path = os.path.join(ROOT, "site", "census-daily.json")
 days = json.load(open(path, encoding="utf-8")) if os.path.exists(path) else []
-days = [d for d in days if d["day"] != day] + [entry]
+# A day arXiv hasn't indexed yet comes back empty; never publish an empty day.
+days = [d for d in days if d["day"] != day and d.get("read")] + ([entry] if entry["read"] else [])
 days = sorted(days, key=lambda d: d["day"])[-60:]
 json.dump(days, open(path, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
 print(entry["day"], entry["read"], "papers,", len(entry["flagged"]), "flagged")

@@ -157,7 +157,8 @@ export class Stage {
   /** Points that walk the flame under every ghost on the page, left to right, then rest below the first. */
   pathOverGhosts() {
     if (!this.ghosts.length) return [[0.2, 0.2], [0.6, 0.45], [0.4, 0.7]];
-    const pts = [[0.12, 0.08]];
+    const f0 = this.ghosts[0];
+    const pts = [[Math.max(0.06, f0.x / this.W - 0.06), (f0.y + f0.h + 26 * SCALE) / this.H - 0.05]];
     for (const g of this.ghosts) {
       const y = (g.y + g.h + 26 * SCALE) / this.H;
       pts.push([g.x / this.W + 0.02, y], [(g.x + g.w * 0.5) / this.W, y + 0.004], [Math.min(0.9, (g.x + g.w) / this.W), y]);

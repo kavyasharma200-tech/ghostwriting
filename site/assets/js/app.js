@@ -368,16 +368,18 @@ const demo = {
     const d = await sampleScan;
     if (doc) return;
     stage.showPdfPage(d.pages[0], d.ghosts);
+    this.played = false;
     desk.caption.textContent = "a paper carrying the real hidden sentence from 2025";
     this.note.hidden = true;
     this.note.classList.remove("on");
   },
   play() {
-    if (doc) return;
-    stage.play(stage.pathOverGhosts(), reduce ? 0.01 : 6.5);
+    if (doc || this.played) return; // once per sheet: the intro and the hero both ask
+    this.played = true;
+    stage.play(stage.pathOverGhosts(), reduce ? 0.01 : 4.2);
     // If the heat check hasn't fired by the end of the walk, show the result anyway.
     clearTimeout(this.t);
-    this.t = setTimeout(() => !stage.revealed && ((stage.revealed = true), this.revealed()), reduce ? 50 : 7500);
+    this.t = setTimeout(() => !stage.revealed && ((stage.revealed = true), this.revealed()), reduce ? 50 : 4800);
   },
   async revealed() {
     if (doc) return;
@@ -390,7 +392,7 @@ const demo = {
     requestAnimationFrame(() => this.note.classList.add("on"));
     if (!gsap || reduce) { toEl.textContent = pct(to); return; }
     const v = { p: from };
-    gsap.to(v, { p: to, duration: 1.6, delay: 0.5, ease: "power3.in", onUpdate: () => (toEl.textContent = pct(v.p)) });
+    gsap.to(v, { p: to, duration: 1.1, delay: 0.2, ease: "power3.in", onUpdate: () => (toEl.textContent = pct(v.p)) });
   },
 };
 const demoReady = demo.start();
@@ -420,7 +422,7 @@ function hero() {
   if (!gsap || reduce) { items.forEach((el) => (el.style.opacity = 1)); demoReady.then(() => demo.play()); return; }
   gsap.fromTo(items, { autoAlpha: 0, y: 16, filter: "blur(8px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1.1, ease: "expo.out", stagger: 0.09, clearProps: "filter,transform" });
   gsap.fromTo(desk.stage, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1.6, ease: "expo.out", delay: 0.15, clearProps: "transform" });
-  demoReady.then(() => setTimeout(() => demo.play(), 500));
+  demoReady.then(() => demo.play());
 }
 function intro() {
   const mode = html.dataset.intro;
@@ -430,11 +432,13 @@ function intro() {
   const el = $(".intro");
   const tl = gsap.timeline({ onComplete: done });
   if (mode === "long") {
-    tl.from(".intro__match .flame", { scale: 0, duration: 0.9, ease: "back.out(2)" })
-      .to(".intro__line span", { opacity: 1, filter: "blur(0px)", duration: 1.2, ease: "power2.out" }, "-=.2")
-      .to({}, { duration: 0.7 });
+    tl.from(".intro__match .flame", { scale: 0, duration: 0.55, ease: "back.out(2)" })
+      .to(".intro__line span", { opacity: 1, filter: "blur(0px)", duration: 0.7, ease: "power2.out" }, "-=.15")
+      .to({}, { duration: 0.25 });
   }
-  tl.to(el, { "--hole": "160vmax", duration: mode === "long" ? 1.5 : 0.9, ease: "power3.in" });
+  // The hero's candle starts walking while the dark is still opening.
+  tl.add(() => demoReady.then(() => demo.play()), "+=0.1");
+  tl.to(el, { "--hole": "160vmax", duration: mode === "long" ? 0.95 : 0.7, ease: "power3.in" }, "<");
 }
 $$("[data-in]").forEach((el) => (el.style.opacity = html.dataset.intro === "none" ? 1 : 0));
 

@@ -2,3 +2,14 @@
 eval/run-*.txt
 __pycache__/
 .DS_Store
+
+# API keys stay on this machine.
+.env
+
+# Census raw results and caches stay local; the site publishes summaries (site/census.json, site/classifier.json).
+census/*.jsonl
+census/*.listing.json
+census/crawl.log
+census/classifier/cache/
+leaderboard/cache/
+__pycache__/

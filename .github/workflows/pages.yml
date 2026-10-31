@@ -5,6 +5,10 @@ on:
     branches: [main]
     paths: ["site/**", ".github/workflows/pages.yml"]
   workflow_dispatch:
+  # Ghost Watch commits with the workflow token, which doesn't trigger push events, so redeploy when it finishes.
+  workflow_run:
+    workflows: ["ghost watch"]
+    types: [completed]
 permissions:
   contents: read
   pages: write

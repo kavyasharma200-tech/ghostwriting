@@ -1,0 +1,42 @@
+# Ghost Watch: every morning, read yesterday's new arXiv papers in AI and security for text hidden for AI
+# reviewers, and publish the day's tally to the site (site/census-daily.json). Runs the same scanner as the
+# October census, at arXiv's pace (one request every 3 seconds); PDFs are read in memory and never kept.
+name: ghost watch
+on:
+  schedule:
+    - cron: "30 4 * * *"   # 04:30 UTC, after arXiv's daily announcement
+  workflow_dispatch:
+    inputs:
+      day:
+        description: "Day to read (YYYY-MM-DD, default: yesterday)"
+        required: false
+      limit:
+        description: "Most papers to read"
+        required: false
+        default: "250"
+permissions:
+  contents: write
+concurrency: { group: ghost-watch, cancel-in-progress: false }
+jobs:
+  read:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install pymupdf
+      - name: Read the day's papers
+        run: |
+          DAY="${{ github.event.inputs.day }}"
+          [ -z "$DAY" ] && DAY=$(date -u -d "yesterday" +%F)
+          echo "DAY=$DAY" >> "$GITHUB_ENV"
+          python census/crawl.py --since "$DAY" --until "$DAY" --out census/day.jsonl --limit "${{ github.event.inputs.limit || '250' }}"
+      - name: Publish the tally
+        run: |
+          python census/daily.py census/day.jsonl "$DAY"
+          git config user.name "ghost-watch[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add site/census-daily.json
+          git diff --cached --quiet || git commit -m "Ghost Watch: $DAY"
+          git push

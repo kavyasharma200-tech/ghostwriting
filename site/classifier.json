@@ -1,0 +1,32 @@
+{
+ "model": "TabPFN-3.5",
+ "trainRows": 1425,
+ "rows": [
+  {
+   "label": "Disguised instructions it never saw",
+   "n": 286,
+   "tabpfn": 0.9790209790209791,
+   "rules": 0.4020979020979021
+  },
+  {
+   "label": "…of which use none of the usual keywords",
+   "n": 171,
+   "tabpfn": 0.9649122807017544,
+   "rules": 0.0
+  },
+  {
+   "label": "…written in German, Spanish, French, Hindi, Portuguese, Chinese",
+   "n": 60,
+   "tabpfn": 1.0,
+   "rules": 0.1
+  }
+ ],
+ "real": {
+  "papers": 16,
+  "recall": 1.0,
+  "blindRecall": 0.8125
+ },
+ "hardNegativeRules": 0.24709302325581395,
+ "hardNegativeFpr": 0.005813953488372093,
+ "hardNegatives": 344
+}

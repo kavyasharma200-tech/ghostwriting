@@ -17,6 +17,18 @@ taken out, so you can watch how far one hidden sentence moves its answer.
 Nothing is uploaded. The document is read by pdf.js in your tab, and Gemma runs in your browser through Transformers.js and WebGPU,
 so it keeps working with the Wi-Fi off once the model has been cached.
 
+Around the tool:
+
+- **The census** (`census/`): `crawl.py` reads every new arXiv paper in a set of AI and security categories, one request every
+  three seconds, scans each PDF in memory with PyMuPDF and keeps only what it found; `summary.py` turns the results into
+  `site/census.json` for the page.
+- **The ghost classifier** (`census/classifier/`): a TabPFN model trained on measured runs of hidden-looking text, real, planted and
+  innocent, that separates instructions hidden for an AI from figure labels and other clutter that only looks hidden.
+- **Who obeys** (`leaderboard/`): open models given the sixteen real papers as a reviewer, with and without the hidden text,
+  measured as each model's own chance of answering "Accept".
+- **Ghost Watch** (`.github/workflows/ghost-watch.yml`): a scheduled GitHub Action that reads the previous day's new papers every
+  morning and publishes the tally to the site.
+
 ## What it catches
 
 | Trick | How it is found |

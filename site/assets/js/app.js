@@ -4,6 +4,8 @@ import { scanPdf } from "./scan-pdf.js";
 import { scanHtml } from "./scan-html.js";
 import { scanText, stripInvisible } from "./scan-text.js";
 import { rules, minor } from "./judge.js";
+import { Stage } from "./stage.js";
+import { sixteen, census, obey, xray, wick, snuff } from "./chapters.js";
 import { webgpu, load, lean, onProgress, isReady } from "./gemma.js";
 
 const $ = (s, r = document) => r.querySelector(s);
@@ -78,102 +80,22 @@ const desk = {
 };
 let doc = null;       // the scanned document
 let shownPage = 0;    // index into doc.pages
-const light = { x: 0.18, y: 0.12, auto: null };
+const stage = new Stage(desk.stage, { candleScale: 0.8, onRevealed: () => demo.revealed?.() });
 
-/** Puts the candle at (x, y), as fractions of the paper. */
-function placeCandle(x, y) {
-  light.x = x; light.y = y;
-  const pr = desk.paper.getBoundingClientRect(), sr = desk.stage.getBoundingClientRect();
-  if (!pr.width) return;
-  const r = pr.width * 0.36;
-  desk.paper.style.setProperty("--cx", `${x * 100}%`);
-  desk.paper.style.setProperty("--cy", `${y * 100}%`);
-  desk.paper.style.setProperty("--r", `${r}px`);
-  const px = pr.left - sr.left + x * pr.width, py = pr.top - sr.top + y * pr.height;
-  desk.stage.style.setProperty("--lx", `${px}px`);
-  desk.stage.style.setProperty("--ly", `${py}px`);
-  desk.stage.style.setProperty("--r", `${r}px`);
-  desk.stage.style.setProperty("--px", `${px}px`);
-  desk.stage.style.setProperty("--py", `${py}px`);
-  // Web pages and plain text: each hidden span browns in by how close the flame is.
-  for (const g of $$(".gh", desk.paper)) {
-    const b = g.getBoundingClientRect();
-    const d = Math.hypot(b.left + b.width / 2 - (pr.left + x * pr.width), b.top + b.height / 2 - (pr.top + y * pr.height));
-    g.style.setProperty("--o", Math.max(0, Math.min(1, 1.25 - d / r)).toFixed(3));
-  }
-}
-
-function sweepTo(x, y, duration = 2.2) {
-  light.auto?.kill?.();
-  if (!gsap || reduce) return placeCandle(x, y);
-  light.auto = gsap.to(light, { x, y, duration, ease: "power2.inOut", onUpdate: () => placeCandle(light.x, light.y) });
-}
-
-desk.stage.addEventListener("pointermove", (e) => {
-  if (!doc) return;
-  light.auto?.kill?.();
-  const pr = desk.paper.getBoundingClientRect();
-  placeCandle((e.clientX - pr.left) / pr.width, (e.clientY - pr.top) / pr.height);
-});
-desk.stage.addEventListener("pointerenter", () => doc && desk.stage.classList.add("lit"));
-
-/** Where a ghost sits on its page, as fractions of the page (PDF only). */
+/** Where a ghost sits on its page, as fractions of the page (PDF only): the flame rests just under it. */
 function ghostSpot(g) {
   const p = doc.pages[g.page - 1];
   if (!p) return null;
   if (!g.rects?.length) return { x: 0.3, y: 0.95 }; // drawn off the page: its words are shown along the bottom edge
-  // The flame sits just under the first hidden line, so the words it brings out stay clear of it.
   const x0 = Math.min(...g.rects.map((r) => r.x)), y0 = Math.min(...g.rects.map((r) => r.y));
   const clampF = (v) => Math.max(0.08, Math.min(0.92, v));
   return { x: clampF((x0 + 70) / p.width), y: clampF((y0 + 52) / p.height) };
 }
 
-/** Draws the hidden words of one PDF page, readable, where they sit. Revealed only under the candle. */
-function ghostLayer(page) {
-  const c = document.createElement("canvas");
-  c.className = "ghostlayer";
-  c.width = page.canvas.width; c.height = page.canvas.height;
-  const ctx = c.getContext("2d");
-  const ink = getComputedStyle(html).getPropertyValue("--scorch-600").trim() || "#9a4f22";
-  const wash = "oklch(0.9 0.06 60 / .55)";
-  const W = c.width, H = c.height, pad = 40 * SCALE;
-  for (const g of doc.ghosts) {
-    if (g.page !== page.number) continue;
-    // Text drawn off the page has no place on it; its words go along the bottom edge.
-    const rects = g.rects?.length ? g.rects : [{ x: 40, y: page.height - 44, w: 0, h: 12 }];
-    const xs = rects.map((r) => r.x * SCALE), ys = rects.map((r) => r.y * SCALE);
-    const h = Math.max(...rects.map((r) => r.h * SCALE));
-    const size = Math.max(14 * SCALE, Math.min(18 * SCALE, h * 0.82));
-    let x = Math.max(pad, Math.min(Math.min(...xs), W - pad * 4));
-    let y = Math.max(pad, Math.min(Math.min(...ys), H - pad));
-    ctx.font = `italic ${size}px "EB Garamond", Georgia, serif`;
-    // Wrap the sentence to the page.
-    const words = g.text.split(" "), lines = [];
-    let line = "";
-    for (const w of words) {
-      const t = line ? line + " " + w : w;
-      if (ctx.measureText(t).width > W - pad - x && line) { lines.push(line); line = w; } else line = t;
-    }
-    if (line) lines.push(line);
-    const lh = size * 1.25;
-    const bw = Math.max(...lines.map((l) => ctx.measureText(l).width));
-    ctx.fillStyle = wash;
-    ctx.beginPath();
-    ctx.roundRect(x - 8, y - size * 0.15 - 6, bw + 16, lines.length * lh + 12, 8);
-    ctx.fill();
-    ctx.fillStyle = ink;
-    ctx.textBaseline = "top";
-    lines.forEach((l, i) => ctx.fillText(l, x, y + i * lh));
-  }
-  return c;
-}
-
 function showPage(i) {
   shownPage = i;
   const page = doc.pages[i];
-  desk.paper.replaceChildren(page.canvas, ghostLayer(page));
-  page.canvas.setAttribute("aria-hidden", "true");
-  desk.paper.style.setProperty("--ratio", (page.width / page.height).toFixed(4));
+  stage.showPdfPage(page, doc.ghosts);
   const total = doc.total > doc.pages.length ? `${doc.pages.length} of ${doc.total}` : doc.total;
   desk.caption.textContent = doc.total > 1 ? `page ${page.number} of ${total}` : doc.name;
 }
@@ -200,8 +122,7 @@ function showSheet() {
       const p = open(); p.textContent = s.text; para = null;
     } else open().append(s.text + " ");
   }
-  desk.paper.replaceChildren(sheet);
-  desk.paper.style.setProperty("--ratio", ".74");
+  stage.showSheet(sheet);
   desk.caption.textContent = doc.name;
 }
 
@@ -290,10 +211,9 @@ function render() {
   const first = talking[0] || doc.ghosts.find((g) => !g.minor);
   if (doc.pages?.length) showPage(Math.max(0, (first?.page || 1) - 1));
   else showSheet();
-  desk.paper.classList.remove("all");
-  desk.stage.classList.add("lit");
-  placeCandle(0.16, 0.1);
-  requestAnimationFrame(() => first ? point(doc.ghosts.indexOf(first), 2.6) : sweepTo(0.5, 0.45, 2.6));
+  stage.revealAll(false);
+  $("[data-all]").textContent = "Light every candle";
+  requestAnimationFrame(() => stage.play(stage.pathOverGhosts(), 5));
 
   // The witness, offered when something is talking to an AI.
   if (n) {
@@ -316,17 +236,19 @@ function words(n) { return ["Zero", "One", "Two", "Three", "Four", "Five", "Six"
 function point(i, duration = 1.4) {
   const g = doc.ghosts[i];
   $$(".ghost", desk.ghosts).forEach((li) => li.classList.toggle("on", +li.dataset.i === i));
+  const from = [stage.target.x, stage.target.y];
   if (g.page && doc.pages.length) {
     if (g.page - 1 !== shownPage) showPage(g.page - 1);
-    const s = ghostSpot(g);
-    if (s) return sweepTo(s.x, s.y, duration);
+    const sp = ghostSpot(g);
+    if (sp) return stage.play([from, [sp.x - 0.12, sp.y], [sp.x + 0.18, sp.y]], duration + 1);
   }
   const span = desk.paper.querySelector(`.gh[data-i="${i}"]`);
   if (span) {
     const pr = desk.paper.getBoundingClientRect(), b = span.getBoundingClientRect();
-    return sweepTo(Math.min(0.85, (b.left - pr.left + 80) / pr.width), Math.min(0.95, (b.bottom - pr.top + 16) / pr.height), duration);
+    const y = Math.min(0.95, (b.bottom - pr.top + 24) / pr.height);
+    return stage.play([from, [(b.left - pr.left + 20) / pr.width, y], [Math.min(0.9, (b.right - pr.left) / pr.width), y]], duration + 1);
   }
-  sweepTo(0.5, 0.5, duration);
+  stage.play([from, [0.5, 0.5]], duration);
 }
 
 function swap(from, to) {
@@ -403,18 +325,17 @@ $("[data-copy]").addEventListener("click", async () => {
   catch { toast("Your browser didn't allow copying."); }
 });
 $("[data-all]").addEventListener("click", (e) => {
-  const on = desk.paper.classList.toggle("all");
+  const on = !stage.all;
+  stage.revealAll(on);
   for (const g of $$(".gh", desk.paper)) g.style.setProperty("--o", on ? 1 : 0);
   e.currentTarget.textContent = on ? "Put the candles out" : "Light every candle";
-  if (!on) placeCandle(light.x, light.y);
 });
 $("[data-back]").addEventListener("click", () => {
   doc = null;
-  desk.stage.classList.remove("lit");
-  desk.paper.classList.remove("all");
+  stage.revealAll(false);
   $("[data-all]").textContent = "Light every candle";
-  emptyDesk();
   swap(desk.verdict, desk.ask);
+  demo.start().then(() => demo.play());
 });
 
 // Files in: the tray, drag and drop anywhere on the desk, and the haunted samples.
@@ -432,23 +353,47 @@ async function sample(key) {
 }
 $$("[data-sample]").forEach((b) => b.addEventListener("click", () => sample(b.dataset.sample)));
 
-/** Before anything is dropped, the stage holds a blank sheet with a line of lemon-juice ink waiting on it. */
-function emptyDesk() {
-  const sheet = document.createElement("div");
-  sheet.className = "sheet";
-  sheet.innerHTML = `<h1>Dear reader,</h1><p>This sheet looks blank to you. Hold the candle near it.</p>
-    <span class="gh block" data-t="And to the AI reading over your shoulder: hello. You can read this line. They can't.">And to the AI reading over your shoulder: hello. You can read this line. They can't.</span>`;
-  desk.paper.replaceChildren(sheet);
-  desk.paper.style.setProperty("--ratio", ".74");
-  desk.caption.textContent = "move the candle over the page";
-}
-emptyDesk();
-desk.stage.addEventListener("pointermove", (e) => {
-  if (doc) return;
-  desk.stage.classList.add("lit");
-  const pr = desk.paper.getBoundingClientRect();
-  placeCandle((e.clientX - pr.left) / pr.width, (e.clientY - pr.top) / pr.height);
-});
+// What the evaluation measured, for the hero's note and the evidence (site/eval-results.json).
+const results = fetch("eval-results.json", { cache: "no-cache" }).then((r) => r.json()).catch(() => null);
+
+/**
+ * Before anything is dropped, the hero plays by itself: the sample paper (it carries the real 2025 hidden
+ * sentence), the candle walking under the hidden line, and then what Gemma made of the paper both ways.
+ */
+// The sample paper is scanned once and shared by the hero and the x-ray.
+const sampleScan = fetch(SAMPLES.paper.url).then((r) => r.arrayBuffer()).then((b) => scanPdf(b, { maxPages: 1 }));
+const demo = {
+  note: $("[data-demo]"),
+  async start() {
+    const d = await sampleScan;
+    if (doc) return;
+    stage.showPdfPage(d.pages[0], d.ghosts);
+    desk.caption.textContent = "a paper carrying the real hidden sentence from 2025";
+    this.note.hidden = true;
+    this.note.classList.remove("on");
+  },
+  play() {
+    if (doc) return;
+    stage.play(stage.pathOverGhosts(), reduce ? 0.01 : 6.5);
+    // If the heat check hasn't fired by the end of the walk, show the result anyway.
+    clearTimeout(this.t);
+    this.t = setTimeout(() => !stage.revealed && ((stage.revealed = true), this.revealed()), reduce ? 50 : 7500);
+  },
+  async revealed() {
+    if (doc) return;
+    const r = await results;
+    const p = r?.gemma?.samples?.find((x) => x.label === "paper");
+    const from = p ? p.clean : 0.031, to = p ? p.haunted : 1;
+    $("[data-demo-from]").textContent = pct(from);
+    const toEl = $("[data-demo-to]");
+    this.note.hidden = false;
+    requestAnimationFrame(() => this.note.classList.add("on"));
+    if (!gsap || reduce) { toEl.textContent = pct(to); return; }
+    const v = { p: from };
+    gsap.to(v, { p: to, duration: 1.6, delay: 0.5, ease: "power3.in", onUpdate: () => (toEl.textContent = pct(v.p)) });
+  },
+};
+const demoReady = demo.start();
 
 /* ------------------------------------------------------------------ the page around it */
 
@@ -472,9 +417,10 @@ $$("[data-reveal]").forEach((el) => io.observe(el));
 // Intro: a candle catches, one line browns in, then the dark opens from the flame.
 function hero() {
   const items = $$("[data-in]");
-  if (!gsap || reduce) { items.forEach((el) => (el.style.opacity = 1)); return; }
+  if (!gsap || reduce) { items.forEach((el) => (el.style.opacity = 1)); demoReady.then(() => demo.play()); return; }
   gsap.fromTo(items, { autoAlpha: 0, y: 16, filter: "blur(8px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1.1, ease: "expo.out", stagger: 0.09, clearProps: "filter,transform" });
-  gsap.fromTo(desk.stage, { autoAlpha: 0, y: 24, rotate: 1.2 }, { autoAlpha: 1, y: 0, rotate: 0, duration: 1.6, ease: "expo.out", delay: 0.15, onComplete: () => !doc && sweepTo(0.62, 0.55, 2.4) });
+  gsap.fromTo(desk.stage, { autoAlpha: 0, y: 24 }, { autoAlpha: 1, y: 0, duration: 1.6, ease: "expo.out", delay: 0.15, clearProps: "transform" });
+  demoReady.then(() => setTimeout(() => demo.play(), 500));
 }
 function intro() {
   const mode = html.dataset.intro;
@@ -492,38 +438,6 @@ function intro() {
 }
 $$("[data-in]").forEach((el) => (el.style.opacity = html.dataset.intro === "none" ? 1 : 0));
 
-// The case: one page held still while its story passes.
-function caseStory() {
-  const sec = $("#case");
-  const beats = $$(".beat", sec), ghost = $("[data-case-ghost]"), candle = $("[data-case-candle]"), gauge = $("[data-case-gauge]"), num = $("[data-case-num]");
-  ghost.dataset.t = ghost.textContent;
-  const cy = () => `${ghost.offsetTop + ghost.offsetHeight / 2}px`;
-  if (!gsap || !ST || reduce) {
-    beats.forEach((b) => (b.style.opacity = 1));
-    ghost.style.setProperty("--o", 1); gauge.style.opacity = 1; num.textContent = "100%";
-    return;
-  }
-  const val = { v: 3.1 };
-  const tl = gsap.timeline({ scrollTrigger: { trigger: sec, start: "top top", end: "bottom bottom", scrub: 0.8 } });
-  const inB = (b) => tl.fromTo(b, { autoAlpha: 0, y: 30, filter: "blur(8px)" }, { autoAlpha: 1, y: 0, filter: "blur(0px)", duration: 1 });
-  const outB = (b) => tl.to(b, { autoAlpha: 0, y: -30, filter: "blur(8px)", duration: 0.8 }, "+=1.2");
-  gsap.set(candle, { "--cx": "-30%", "--cy": cy });
-  inB(beats[0]); outB(beats[0]);
-  inB(beats[1]);
-  tl.to(candle, { "--cx": "52%", duration: 1.6, ease: "power1.inOut" }, "<");
-  tl.to(ghost, { "--o": 1, duration: 0.8 }, "-=0.6");
-  outB(beats[1]);
-  tl.to(ghost, { "--o": 0, duration: 0.6 }, "<");
-  tl.to(candle, { "--cx": "130%", opacity: 0, duration: 1, ease: "power1.in" }, "<");
-  inB(beats[2]);
-  tl.to(gauge, { autoAlpha: 1, duration: 0.6 }, "<");
-  outB(beats[2]);
-  inB(beats[3]);
-  tl.to(ghost, { "--o": 1, duration: 0.8 }, "<");
-  tl.to(val, { v: 100, duration: 1.4, ease: "power2.in", onUpdate: () => (num.textContent = val.v < 10 ? val.v.toFixed(1) + "%" : Math.round(val.v) + "%") }, "<");
-  tl.to({}, { duration: 1.2 });
-}
-
 // The evidence: rendered from the evaluation's own results file.
 async function evidence() {
   const box = $("[data-ev]");
@@ -531,21 +445,43 @@ async function evidence() {
   try { r = await (await fetch("eval-results.json", { cache: "no-cache" })).json(); } catch { box.innerHTML = `<p>The evaluation results aren't published yet.</p>`; return; }
   const row = (cells) => `<tr>${cells.map((c, i) => `<td${i && typeof c === "string" && /^([\d<>.%/ ]+|\d+ of \d+)$/.test(c) ? ' class="n"' : ""}>${c}</td>`).join("")}</tr>`;
   const parts = [];
-  if (r.real) parts.push(`<table><caption>The real papers from 2025</caption>
+  if (false && r.real) parts.push(`<table><caption>The real papers from 2025</caption>
     <tr><th>arXiv</th><th>How it was hidden</th><th>Found</th></tr>
     ${r.real.items.map((x) => row([`<a href="https://arxiv.org/abs/${x.id}">${x.id}</a>`, esc(x.how), x.found ? "yes" : `<span class="miss">missed</span>`])).join("")}
     </table><p>${esc(r.real.summary)}</p>`);
-  if (r.planted) parts.push(`<table><caption>Planted by me, one trick at a time</caption>
-    <tr><th>Trick</th><th>Documents</th><th>Found</th></tr>
-    ${r.planted.items.map((x) => row([esc(x.label), String(x.n), x.found === x.n ? `${x.found} / ${x.n}` : `<span class="miss">${x.found} / ${x.n}</span>`])).join("")}
-    </table><p>${esc(r.planted.summary)}</p>`);
-  if (r.clean) parts.push(`<table><caption>Ordinary papers, where it should find nothing</caption>
-    <tr><th>Recent arXiv papers</th><th>Papers</th></tr>
-    ${row(["Flagged as talking to an AI", `${r.clean.aiFlagged} of ${r.clean.n}`])}
-    ${row(["With longer hidden text, listed quietly", `${r.clean.flagged} of ${r.clean.n}`])}
-    ${r.clean.minorPapers != null ? row(["With short hidden fragments, only counted", `${r.clean.minorPapers} of ${r.clean.n}`]) : ""}
-    </table><p>${esc(r.clean.summary)}</p>`);
-  if (r.gemma) parts.push(`<table><caption>What the hidden sentence does to Gemma 3 1B, as a reviewer</caption>
+  // The ghost classifier: TabPFN against the plain rules, on instructions neither had seen.
+  try {
+    const k = await (await fetch("classifier.json", { cache: "no-cache" })).json();
+    const bar = (label, a, b, n, lower) => `<div class="vs__row"><span>${esc(label)}<small>${n} examples${lower ? ", lower is better" : ""}</small></span>
+      <span class="vs__bars"><i class="vs__t" style="--v:${(a * 100).toFixed(1)}%"><b>${a === 0 ? "0%" : pct(a)}</b></i><i class="vs__r" style="--v:${(b * 100).toFixed(1)}%"><b>${b === 0 ? "0%" : pct(b)}</b></i></span></div>`;
+    const words = ["no", "one", "two", "three", "four", "five", "six", "seven", "eight", "nine", "ten", "eleven", "twelve", "thirteen", "fourteen", "fifteen", "sixteen"];
+    const blind = Math.round(k.real.blindRecall * k.real.papers), fin = Math.round(k.real.recall * k.real.papers);
+    parts.push(`<div class="vs"><p class="matrix__cap">${esc(k.model)} against my plain rules</p>
+      <p class="vs__key"><span class="vs__t"></span>${esc(k.model)}, trained on ${k.trainRows.toLocaleString("en-US")} measured runs <span class="vs__r"></span>the rules</p>
+      ${k.rows.map((x) => bar(x.label, x.tabpfn, x.rules, x.n)).join("")}
+      ${k.hardNegativeFpr != null && k.hardNegativeRules != null ? bar("Innocent text that only looks hidden, flagged anyway", k.hardNegativeFpr, k.hardNegativeRules, k.hardNegatives, true) : ""}
+    </div><p>On the sixteen real papers it never trained on, its first, blind run found ${words[blind] || blind}; it missed the three long “LLM reviewer note” outlines because I had only taught it one-sentence instructions. After I added long instructions, it found ${words[fin] || fin} of sixteen, so that number is no longer blind, and I say so here rather than leave it out.</p>`);
+  } catch { /* classifier results not published */ }
+  // Proof as pictures: every planted document is a little page, browned where its ghost was found.
+  const sheet = (lit, title) => `<i class="mini${lit ? " lit" : ""}" title="${esc(title)}"><b></b><b></b><b></b></i>`;
+  if (r.planted) {
+    const kinds = ["research abstract", "résumé", "student essay"];
+    parts.push(`<div class="matrix"><p class="matrix__cap">Planted by me, one trick at a time</p>
+      ${r.planted.items.map((x) => `<div class="matrix__row"><span>${esc(x.label)}</span><span class="matrix__cells">${
+        Array.from({ length: x.n }, (_, i) => sheet(i < x.found, `${x.n === 3 ? kinds[i] : "web page"}: ${i < x.found ? "found" : "missed"}`)).join("")
+      }</span><b class="${x.found === x.n ? "" : "miss"}">${x.found} of ${x.n}</b></div>`).join("")}
+      <div class="matrix__row is-control"><span>Honest copies, with nothing hidden</span><span class="matrix__cells">${
+        Array.from({ length: r.planted.controls }, () => sheet(false, "honest copy: nothing flagged")).join("")
+      }</span><b>${r.planted.controlFlags} flagged</b></div>
+    </div><p>${esc(r.planted.summary)}</p>`);
+  }
+  if (r.clean) {
+    parts.push(`<div class="matrix"><p class="matrix__cap">Ordinary papers, where it should find nothing</p>
+      <div class="cleanrow">${Array.from({ length: r.clean.n }, (_, i) => `<i class="mini${i < r.clean.aiFlagged ? " lit" : ""}${i >= r.clean.aiFlagged && i < r.clean.aiFlagged + r.clean.flagged ? " quiet" : ""}"><b></b><b></b><b></b></i>`).join("")}</div>
+      <p class="matrix__key"><b>${r.clean.aiFlagged} of ${r.clean.n}</b> flagged as talking to an AI · <span class="dot"></span>${r.clean.flagged} with longer hidden text, listed quietly</p>
+    </div><p>${esc(r.clean.summary)}</p>`);
+  }
+  if (false && r.gemma) parts.push(`<table><caption>What the hidden sentence does to Gemma 3 1B, as a reviewer</caption>
     <tr><th>arXiv</th><th>Chance of “Accept” without it</th><th>With it</th></tr>
     ${r.gemma.items.map((x) => row([`<a href="https://arxiv.org/abs/${x.doc}">${x.doc}</a>`, pct(x.clean), pct(x.haunted)])).join("")}
     </table><p>${esc(r.gemma.summary)}</p>`);
@@ -554,9 +490,13 @@ async function evidence() {
 
 window.addEventListener("load", () => {
   intro();
-  caseStory();
+  results.then((r) => { sixteen(r); ST?.refresh(); });
+  census().then(() => ST?.refresh());
+  obey().then(() => ST?.refresh());
+  xray(sampleScan).then(() => ST?.refresh());
+  wick();
+  snuff();
   evidence();
   if (shot && SAMPLES[shot]) sample(shot);
   ST?.refresh();
 });
-window.addEventListener("resize", () => doc && placeCandle(light.x, light.y));

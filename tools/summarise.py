@@ -44,7 +44,8 @@ def main():
     summaries = json.loads((ROOT / "eval" / "summaries.json").read_text(encoding="utf-8")) if (ROOT / "eval" / "summaries.json").exists() else {}
     manifest = {e["id"] + e["version"]: e for e in json.loads((ROOT / "eval" / "real" / "manifest.json").read_text(encoding="utf-8"))}
 
-    real = [{"id": x["id"], "how": how(manifest[x["id"]]), "found": x["found"] and x["ai"], "otherFlags": x["otherFlags"]} for x in r["real"]]
+    real = [{"id": x["id"], "how": how(manifest[x["id"]]), "found": x["found"] and x["ai"], "otherFlags": x["otherFlags"],
+             "page": manifest[x["id"]].get("page"), "text": manifest[x["id"]]["hidden_text"]} for x in r["real"]]
 
     planted = []
     for tech, label in LABELS.items():

@@ -45,4 +45,5 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git add site/census-daily.json
           git diff --cached --quiet || git commit -m "Ghost Watch: $DAY"
-          git push
+          # Someone may have pushed while it was reading; replay this one commit on top and try again.
+          for i in 1 2 3; do git pull --rebase origin main && git push && break; sleep 5; done

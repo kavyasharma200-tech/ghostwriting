@@ -13,3 +13,6 @@ census/crawl.log
 census/classifier/cache/
 leaderboard/cache/
 __pycache__/
+
+# The editable install.
+*.egg-info/

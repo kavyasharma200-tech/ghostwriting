@@ -7,6 +7,7 @@ import { rules, minor } from "./judge.js";
 import { Stage } from "./stage.js";
 import { sixteen, census, obey, xray, wick, snuff } from "./chapters.js";
 import { webgpu, load, lean, onProgress, isReady } from "./gemma.js";
+import { canary } from "./canary.js";
 
 const $ = (s, r = document) => r.querySelector(s);
 const $$ = (s, r = document) => [...r.querySelectorAll(s)];
@@ -143,35 +144,118 @@ function plainTextDoc(text, name) {
   return { kind: "text", pages: [], ghosts, sequence, title: "", machine: text, clean: stripInvisible(text).trim() };
 }
 
-async function open(file) {
+/** Scans one file and reads each hidden run against the rules. Shared by the desk and the batch. */
+async function read(file, onPage) {
   const name = file.name || "document";
+  let d;
+  if (/\.pdf$/i.test(name) || file.type === "application/pdf") d = await scanPdf(await file.arrayBuffer(), { onPage });
+  else {
+    const text = await file.text();
+    d = /\.html?$/i.test(name) || /^\s*<(!doctype|html)/i.test(text) ? await scanHtml(text) : plainTextDoc(text, name);
+  }
+  d.name = name;
+  d.file = file;
+  for (const g of d.ghosts) g.verdict = g.quiet ? { talksToAi: false, hits: [] } : rules(g.text);
+  // Figure labels and stray symbols are counted in a line of their own, not listed as ghosts.
+  // They stay in d.ghosts (web pages place ghosts by index), marked and left out of the list.
+  for (const g of d.ghosts) g.minor = !g.quiet && minor(g.text);
+  d.minor = d.ghosts.filter((g) => g.minor).length;
+  return d;
+}
+
+async function open(file, from = desk.ask) {
   desk.say.innerHTML = "Lighting the candle…";
   desk.sub.textContent = "";
   desk.ghosts.replaceChildren();
   desk.witness.hidden = true; desk.run.hidden = true;
-  swap(desk.ask, desk.verdict);
+  $("[data-canary-note]").hidden = true;
+  swap(from, desk.verdict);
   try {
-    if (/\.pdf$/i.test(name) || file.type === "application/pdf") {
-      doc = await scanPdf(await file.arrayBuffer(), {
-        onPage: (p) => { desk.sub.textContent = `Reading page ${p.number}…`; },
-      });
-    } else {
-      const text = await file.text();
-      doc = /\.html?$/i.test(name) || /^\s*<(!doctype|html)/i.test(text) ? await scanHtml(text) : plainTextDoc(text, name);
-    }
+    doc = await read(file, (p) => { desk.sub.textContent = `Reading page ${p.number}…`; });
   } catch (err) {
     desk.say.innerHTML = "That one wouldn't open.";
     desk.sub.textContent = `${err.message}. Try a PDF, a saved web page (.html) or a text file.`;
     return;
   }
-  doc.name = name;
-  for (const g of doc.ghosts) g.verdict = g.quiet ? { talksToAi: false, hits: [] } : rules(g.text);
-  // Figure labels and stray symbols are counted in a line of their own, not listed as ghosts.
-  // They stay in doc.ghosts (web pages place ghosts by index), marked and left out of the list.
-  for (const g of doc.ghosts) g.minor = !g.quiet && minor(g.text);
-  doc.minor = doc.ghosts.filter((g) => g.minor).length;
   doc.genre = kindOf(doc.clean + " " + doc.machine);
   render();
+}
+
+/* ------------------------------------------------------------------ the batch: a pile of documents, one table */
+
+const pile = { el: $("[data-batch]"), rows: [], list: $("[data-batch-rows]"), say: $("[data-batch-say]"), sub: $("[data-batch-sub]") };
+
+async function batch(files) {
+  files = files.filter((f) => /\.(pdf|html?|txt|md|eml)$/i.test(f.name) || /^(application\/pdf|text\/)/.test(f.type));
+  if (!files.length) return toast("None of those are PDFs, web pages or text files.");
+  if (files.length === 1) return open(files[0]);
+  doc = null;
+  pile.rows = [];
+  pile.list.replaceChildren();
+  pile.say.innerHTML = `Reading ${files.length} documents…`;
+  pile.sub.textContent = "";
+  $("[data-batch-csv]").disabled = true;
+  demo.note.hidden = true;
+  if (pile.el.hidden) swap(desk.verdict.hidden ? desk.ask : desk.verdict, pile.el);
+  for (const [n, file] of files.entries()) {
+    pile.sub.textContent = `${n + 1} of ${files.length}: ${file.name}`;
+    let row;
+    try {
+      const d = await read(file);
+      const talking = d.ghosts.filter((g) => g.verdict.talksToAi);
+      const other = d.ghosts.filter((g) => !g.verdict.talksToAi && !g.minor);
+      const first = talking[0] || other[0];
+      row = { file, name: file.name, verdict: talking.length ? "haunted" : other.length ? "hidden text" : "clean", ghosts: talking.length,
+        page: first?.page || "", how: first ? first.how.join("; ") : "", says: first?.text || "" };
+      // The candle visits every haunted document as it's found.
+      if (talking.length && d.pages?.length) {
+        const p = d.pages[(talking[0].page || 1) - 1];
+        if (p?.canvas) { stage.showPdfPage(p, d.ghosts); desk.caption.textContent = file.name; stage.play(stage.pathOverGhosts(), 2.4); }
+      }
+    } catch (err) {
+      row = { file, name: file.name, verdict: "could not read", ghosts: 0, page: "", how: "", says: err.message };
+    }
+    pile.rows.push(row);
+    pile.list.append(pileRow(row, pile.rows.length - 1));
+  }
+  const order = { haunted: 0, "hidden text": 1, "could not read": 2, clean: 3 };
+  pile.rows.sort((a, b) => order[a.verdict] - order[b.verdict] || a.name.localeCompare(b.name));
+  pile.list.replaceChildren(...pile.rows.map(pileRow));
+  const h = pile.rows.filter((r) => r.verdict === "haunted").length, all = pile.rows.length;
+  pile.say.innerHTML = h ? `${h === 1 ? "One" : words(h)} of ${all} documents ${h === 1 ? "is" : "are"} <em>written for the AI.</em>` : `None of these ${all} documents <em>hides anything for an AI.</em>`;
+  const other = pile.rows.filter((r) => r.verdict === "hidden text").length;
+  pile.sub.textContent = (h ? "Haunted ones first. Open any row to hold the candle to it." : "Every word an AI would read in them is also on the page.") +
+    (other ? ` ${other} more ${other === 1 ? "has" : "have"} hidden text that doesn't seem to talk to an AI.` : "");
+  $("[data-batch-csv]").disabled = false;
+}
+
+function pileRow(r, i) {
+  const li = document.createElement("li");
+  li.className = `pile-row is-${r.verdict.replace(/\s+/g, "-")}`;
+  li.tabIndex = 0;
+  li.innerHTML = `<span class="pile-row__name">${esc(r.name)}</span><span class="pile-row__v">${esc(r.verdict)}${r.page ? ` · page ${r.page}` : ""}</span>${
+    r.says && r.verdict !== "clean" ? `<q>${esc(r.says.length > 140 ? r.says.slice(0, 140) + "…" : r.says)}</q>` : ""}`;
+  const go = () => open(pile.rows[i].file, pile.el);
+  li.addEventListener("click", go);
+  li.addEventListener("keydown", (e) => (e.key === "Enter" || e.key === " ") && (e.preventDefault(), go()));
+  return li;
+}
+
+$("[data-batch-csv]").addEventListener("click", () => {
+  const q = (v) => `"${String(v).replace(/"/g, '""')}"`;
+  const csv = ["file,verdict,ghosts,page,how,says", ...pile.rows.map((r) => [r.name, r.verdict, r.ghosts, r.page, r.how, r.says].map(q).join(","))].join("\n");
+  save(new Blob([csv], { type: "text/csv" }), "ghostwriting-report.csv");
+});
+$("[data-batch-back]").addEventListener("click", () => {
+  pile.rows = [];
+  swap(pile.el, desk.ask);
+  demo.start().then(() => demo.play());
+});
+
+function save(blob, name) {
+  const a = Object.assign(document.createElement("a"), { href: URL.createObjectURL(blob), download: name });
+  document.body.append(a); a.click(); a.remove();
+  setTimeout(() => URL.revokeObjectURL(a.href), 4000);
 }
 
 function render() {
@@ -334,17 +418,33 @@ $("[data-back]").addEventListener("click", () => {
   doc = null;
   stage.revealAll(false);
   $("[data-all]").textContent = "Light every candle";
+  // Opened from a pile: back to the pile.
+  if (pile.rows.length) return swap(desk.verdict, pile.el);
   swap(desk.verdict, desk.ask);
   demo.start().then(() => demo.play());
 });
+$("[data-canary]").addEventListener("click", async (e) => {
+  if (!doc?.file) return;
+  const btn = e.currentTarget, note = $("[data-canary-note]");
+  btn.disabled = true;
+  try {
+    const c = await canary(doc.file);
+    save(c.blob, c.name);
+    note.innerHTML = `Saved <b>${esc(c.name)}</b>. It hides one harmless line asking any AI that reads it to use the word “pumpkin”. Give it to your own AI the way you normally would and ask for a summary: if “pumpkin” turns up, your AI obeys text you can't see.`;
+  } catch (err) {
+    note.textContent = `The canary copy couldn't be made: ${err.message}.`;
+  }
+  note.hidden = false;
+  btn.disabled = false;
+});
 
-// Files in: the tray, drag and drop anywhere on the desk, and the haunted samples.
+// Files in: the tray, drag and drop anywhere on the desk, and the haunted samples. Two or more make a pile.
 const tray = $("[data-drop]");
-$("[data-file]").addEventListener("change", (e) => e.target.files[0] && open(e.target.files[0]));
+$("[data-file]").addEventListener("change", (e) => { const f = [...e.target.files]; e.target.value = ""; f.length && batch(f); });
 for (const el of [tray, desk.stage]) {
   el.addEventListener("dragover", (e) => { e.preventDefault(); tray.classList.add("over"); });
   el.addEventListener("dragleave", () => tray.classList.remove("over"));
-  el.addEventListener("drop", (e) => { e.preventDefault(); tray.classList.remove("over"); e.dataTransfer.files[0] && open(e.dataTransfer.files[0]); });
+  el.addEventListener("drop", (e) => { e.preventDefault(); tray.classList.remove("over"); const f = [...e.dataTransfer.files]; f.length && batch(f); });
 }
 async function sample(key) {
   const s = SAMPLES[key];
@@ -382,7 +482,7 @@ const demo = {
     this.t = setTimeout(() => !stage.revealed && ((stage.revealed = true), this.revealed()), reduce ? 50 : 4800);
   },
   async revealed() {
-    if (doc) return;
+    if (doc || !pile.el.hidden) return;
     const r = await results;
     const p = r?.gemma?.samples?.find((x) => x.label === "paper");
     const from = p ? p.clean : 0.031, to = p ? p.haunted : 1;

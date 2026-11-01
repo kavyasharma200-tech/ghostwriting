@@ -118,11 +118,27 @@ html[data-intro="none"] .intro, html[data-intro="done"] .intro { display: none; 
 }
 
 /* ---------- the verdict ---------- */
-.verdict .back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; cursor: pointer; color: var(--ash-400); font-size: 14px; padding: 0; margin-bottom: 20px; }
-.verdict .back svg { width: 18px; height: 18px; }
-.verdict .back:hover { color: var(--ash-100); }
-.verdict .mid { max-width: 15ch; }
-.verdict .mid em { color: var(--scorch-300); }
+:is(.verdict, .batch) .back { display: inline-flex; align-items: center; gap: 6px; border: 0; background: none; cursor: pointer; color: var(--ash-400); font-size: 14px; padding: 0; margin-bottom: 20px; }
+:is(.verdict, .batch) .back svg { width: 18px; height: 18px; }
+:is(.verdict, .batch) .back:hover { color: var(--ash-100); }
+:is(.verdict, .batch) .mid { max-width: 15ch; }
+:is(.verdict, .batch) .mid em { color: var(--scorch-300); }
+.canary-note { margin: 14px 0 0; max-width: 46ch; font-size: 13.5px; line-height: 1.55; color: var(--ash-300); }
+.canary-note b { color: var(--scorch-200); font: 500 13px var(--mono); }
+
+/* ---------- the pile: many documents, one table, haunted first ---------- */
+.pile { list-style: none; margin: 24px 0 0; padding: 0 6px 18px 0; display: grid; gap: 6px; max-height: 44svh; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--soot-600) transparent;
+  mask-image: linear-gradient(#000 calc(100% - 36px), transparent); -webkit-mask-image: linear-gradient(#000 calc(100% - 36px), transparent); }
+.pile-row { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 4px 14px; align-items: baseline; padding: 11px 14px; border-radius: var(--r-control); cursor: pointer;
+  border: 1px solid var(--soot-800); background: oklch(0.16 0.01 60 / .7); transition: border-color .4s var(--ease); animation: rise .6s var(--ease) both; }
+.pile-row:hover, .pile-row:focus-visible { border-color: var(--ash-400); }
+.pile-row__name { font-size: 14px; color: var(--ash-100); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pile-row__v { font-size: 12.5px; color: var(--ash-400); white-space: nowrap; }
+.pile-row q { grid-column: 1 / -1; font: 12.5px/1.45 var(--mono); color: var(--ash-300); quotes: "\201C" "\201D"; overflow-wrap: anywhere; }
+.pile-row.is-haunted { border-color: var(--scorch-700); }
+.pile-row.is-haunted .pile-row__v, .pile-row.is-haunted q { color: var(--scorch-200); }
+.pile-row.is-clean .pile-row__name { color: var(--ash-300); }
+.quiet-btn[disabled] { opacity: .45; cursor: progress; }
 .sub { color: var(--ash-400); font-size: 15px; margin: 12px 0 0; min-height: 1.5em; }
 .ghosts { list-style: none; margin: 24px 0 0; padding: 0 6px 18px 0; display: grid; gap: 10px; max-height: 36svh; overflow: auto; scrollbar-width: thin; scrollbar-color: var(--soot-600) transparent;
   mask-image: linear-gradient(#000 calc(100% - 36px), transparent); -webkit-mask-image: linear-gradient(#000 calc(100% - 36px), transparent); }

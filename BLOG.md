@@ -146,12 +146,16 @@ ghostwriting mcp                                      # the same checks, as tool
 ```python
 @mcp.tool()
 def check_document(path: str) -> dict:
-    """Read a PDF the way a person sees it and the way an AI receives it.
-    Returns every hidden run, how it was hidden, whether it talks to an AI,
-    and the text with the ghosts taken out, safe to read."""
-    pages, runs = scan(Path(path).read_bytes())
-    ghosts = [r for r in runs if r["ai"]]
-    return {"haunted": bool(ghosts), "ghosts": ghosts, "clean_text": exorcise(path, runs)}
+    """Read a PDF or text file the way a person sees it and the way an AI receives it.
+    Returns whether it is haunted, every hidden run that talks to an AI, and `clean_text`:
+    the document with every hidden word taken out, safe to read."""
+    return check(Path(path).expanduser())
+
+def check(path):
+    data = Path(path).read_bytes()
+    pages, runs = scan(data, ink=True)        # draws every page and checks each line for ink
+    ghosts = [r for r in runs if talks_to_ai(r["ai"])]
+    return {"haunted": bool(ghosts), "ghosts": ghosts, "clean_text": exorcise(data, runs)}
 ```
 
 An agent that calls `check_document` before it reads anything gets the exorcised text instead of the haunted one, so the ghost never reaches the model at all.

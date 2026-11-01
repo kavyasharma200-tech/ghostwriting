@@ -1,0 +1,18 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "ghostwriting"
+version = "1.0.0"
+description = "Find the text a document hides for the AI that reads it: a scanner, a command line and an MCP server."
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+dependencies = ["pymupdf>=1.24", "numpy>=1.24", "mcp>=1.2,<2"]
+
+[project.scripts]
+ghostwriting = "ghostwriting.cli:main"
+
+[tool.setuptools]
+packages = ["ghostwriting"]

@@ -23,7 +23,7 @@
   })();
 </script>
 <link rel="stylesheet" href="assets/tokens.css?v=1">
-<link rel="stylesheet" href="assets/site.css?v=1">
+<link rel="stylesheet" href="assets/site.css?v=2">
 </head>
 <body>
 
@@ -51,9 +51,9 @@
         <h1 class="big" data-in>Some documents are written for <em>two readers.</em></h1>
         <p class="lede" data-in>The one you can see, and the AI you'll paste it into. Drop in a PDF or a web page and hold a candle to it.</p>
         <label class="tray" data-in data-drop>
-          <input type="file" accept=".pdf,.html,.htm,.txt,.md,.eml,application/pdf,text/html,text/plain" data-file hidden>
+          <input type="file" accept=".pdf,.html,.htm,.txt,.md,.eml,application/pdf,text/html,text/plain" multiple data-file hidden>
           <svg class="tray__icon" aria-hidden="true"><use href="#i-sheet"/></svg>
-          <span class="tray__words"><b>Drop a PDF or web page here</b><span>or choose a file. It stays on your computer.</span></span>
+          <span class="tray__words"><b>Drop a PDF or web page here</b><span>or a whole pile of them. They stay on your computer.</span></span>
         </label>
         <div class="samples" data-in>
           <span class="samples__lead">Or try one that's haunted:</span>
@@ -78,7 +78,17 @@
           <button class="go" type="button" data-witness-run hidden>Ask Gemma to read it both ways</button>
           <button class="quiet-btn" type="button" data-copy>Copy the exorcised text</button>
           <button class="quiet-btn" type="button" data-all>Light every candle</button>
+          <button class="quiet-btn" type="button" data-canary>Make a canary copy</button>
         </div>
+        <p class="canary-note" data-canary-note hidden></p>
+      </div>
+
+      <div class="batch" data-batch hidden aria-live="polite">
+        <button class="back" type="button" data-batch-back><svg aria-hidden="true"><use href="#i-back"/></svg>Start again</button>
+        <h2 class="mid" data-batch-say></h2>
+        <p class="sub" data-batch-sub></p>
+        <ol class="pile" data-batch-rows></ol>
+        <div class="acts"><button class="quiet-btn" type="button" data-batch-csv>Save the table</button></div>
       </div>
     </div>
 
@@ -199,6 +209,6 @@
 <script src="assets/vendor/gsap.min.js" defer></script>
 <script src="assets/vendor/scrolltrigger.min.js" defer></script>
 <script src="assets/vendor/lenis.min.js" defer></script>
-<script type="module" src="assets/js/app.js?v=1"></script>
+<script type="module" src="assets/js/app.js?v=2"></script>
 </body>
 </html>

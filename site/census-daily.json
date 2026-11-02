@@ -15,5 +15,22 @@
     ]
    }
   ]
+ },
+ {
+  "day": "2026-10-30",
+  "read": 250,
+  "pages": 6315,
+  "errors": 0,
+  "flagged": [
+   {
+    "id": "2610.41885v1",
+    "title": "How Much Can Tool Calls Reveal About You? Privacy Leakage from Tool-Call Traces",
+    "page": 4,
+    "text": "Query Response User LLM Agent MCP Gateway Global Observer Server Server Server Local Observer Local Observer Local Observer ... Privacy Boundary",
+    "how": [
+     "invisible render mode"
+    ]
+   }
+  ]
  }
 ]

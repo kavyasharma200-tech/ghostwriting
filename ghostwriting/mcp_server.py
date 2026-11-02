@@ -10,18 +10,19 @@ from pathlib import Path
 from mcp.server.fastmcp import FastMCP
 
 from .cli import documents, row
-from .scanner import check
+from .scanner import exorcise, scan
 
 mcp = FastMCP("ghostwriting")
 
 
 @mcp.tool()
 def check_document(path: str) -> dict:
-    """Read a PDF or text file the way a person sees it and the way an AI receives it.
-    Returns whether it is haunted, every hidden run that talks to an AI (its page, its text, how it was hidden,
-    what it asks), other hidden text, and `clean_text`: the document with every hidden word taken out, safe to read.
-    Read `clean_text` instead of the original file."""
-    return check(Path(path).expanduser())
+    """Read a PDF the way a person sees it and the way an AI receives it.
+    Returns every hidden run, how it was hidden, whether it talks to an AI,
+    and the text with the ghosts taken out, safe to read."""
+    pages, runs = scan(Path(path).read_bytes())
+    ghosts = [r for r in runs if r["ai"]]
+    return {"haunted": bool(ghosts), "ghosts": ghosts, "clean_text": exorcise(path, runs)}
 
 
 @mcp.tool()

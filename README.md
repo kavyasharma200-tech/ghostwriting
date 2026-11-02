@@ -93,7 +93,7 @@ ghostwriting scan ./applications --json --fail        # JSON, and exit 1 if anyt
 ghostwriting mcp                                      # check_document and check_folder, as tools for an AI agent
 ```
 
-`ghostwriting scan` draws every page and checks each line for ink, as the site does, so it also catches text under a shape and text
+The command line and the MCP server read PDFs and text files; web pages are checked on the site. `ghostwriting scan` draws every page and checks each line for ink, as the site does, so it also catches text under a shape and text
 the colour of its box. It also reads text drawn wholly outside the page from the page's drawing trace. On the evaluation sets it
 finds all 16 real papers and all 24 planted PDF tricks, and flags none of the 38 ordinary papers as talking to an AI. Naming a model
 isn't talking to it, so a hidden chart legend listing "GPT, Claude, Gemini" is listed as other hidden text, not as a ghost.
@@ -104,8 +104,8 @@ To give an agent the checks, add the server to its MCP config:
 { "mcpServers": { "ghostwriting": { "command": "ghostwriting", "args": ["mcp"] } } }
 ```
 
-`check_document(path)` returns whether the file is haunted, every hidden line that talks to an AI (page, text, how it was hidden,
-what it asks), and `clean_text`: the document with every hidden word taken out. An agent that reads `clean_text` instead of the
+`check_document(path)` returns whether the file is haunted, every hidden line that talks to an AI (its page, its text, how it was
+hidden, the rules it matched and its measurements), and `clean_text`: the document with every hidden word taken out. An agent that reads `clean_text` instead of the
 file never sees the ghost. `check_folder(path)` returns the same one-row-per-document table as the command line.
 
 ### The canary kit

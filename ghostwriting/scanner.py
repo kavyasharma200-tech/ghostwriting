@@ -147,9 +147,10 @@ def _spans(doc, max_pages=80, ink=False):
                 yield page, None, None, sp, r, ["off the page"], 1.0
 
 
-def scan(data, max_pages=80, ink=False):
+def scan(data, max_pages=80, ink=True):
     """Hidden-looking runs of text in a PDF or a text file. Returns (pages, runs); each run has the page, the text,
-    how it was hidden, `ai` (what it asks of an AI, empty when nothing) and the measurements the classifier uses."""
+    how it was hidden, `ai` (what it asks of an AI, empty when it isn't talking to one), `hits` (every rule it
+    matched) and the measurements the classifier uses. `ink=False` skips drawing the pages (the census, for speed)."""
     if not data.startswith(b"%PDF"):
         return 1, scan_text(data.decode("utf-8", "replace"))
     doc = pymupdf.open(stream=data, filetype="pdf")
@@ -181,10 +182,16 @@ def scan(data, max_pages=80, ink=False):
     for r in runs:
         decoded = _decode_tags(r["text"])
         r["text"] = " ".join((decoded or strip_invisible(r["text"])).split())
-        r["ai"] = rules(r["text"])
+        _judge(r)
     # Characters no font draws, woven through the visible text.
     runs += [r for r in scan_text("".join(seen)) if r["how"][0] != "Unicode tag characters"]
     return pages, [r for r in runs if r["text"]]
+
+
+def _judge(r):
+    r["hits"] = rules(r["text"])
+    r["ai"] = r["hits"] if talks_to_ai(r["hits"]) else []
+    return r
 
 
 def _decode_tags(text):
@@ -197,13 +204,13 @@ def scan_text(text):
     for m in TAGS.finditer(text):
         decoded = _decode_tags(m.group())
         if decoded:
-            runs.append({"page": 1, "text": decoded, "how": ["Unicode tag characters"], "ai": rules(decoded)})
+            runs.append(_judge({"page": 1, "text": decoded, "how": ["Unicode tag characters"]}))
     zw = ZERO_WIDTH.findall(text)
     if len(zw) >= 3:
-        runs.append({"page": 1, "text": f"{len(zw)} zero-width characters woven into the text", "how": ["zero-width characters"], "ai": []})
+        runs.append({"page": 1, "text": f"{len(zw)} zero-width characters woven into the text", "how": ["zero-width characters"], "ai": [], "hits": []})
     bidi = BIDI.findall(text)
     if bidi:
-        runs.append({"page": 1, "text": f"{len(bidi)} direction-override characters", "how": ["direction overrides"], "ai": []})
+        runs.append({"page": 1, "text": f"{len(bidi)} direction-override characters", "how": ["direction overrides"], "ai": [], "hits": []})
     return runs
 
 
@@ -214,7 +221,7 @@ def exorcise(source, runs=None):
     if not data.startswith(b"%PDF"):
         return strip_invisible(data.decode("utf-8", "replace")).strip()
     if runs is None:
-        _, runs = scan(data, ink=True)
+        _, runs = scan(data)
     hidden = {(r["page"], tuple(round(v, 1) for v in s["bbox"])) for r in runs for s in r.get("spans", [])}
     doc = pymupdf.open(stream=data, filetype="pdf")
     out, last = [], None
@@ -236,14 +243,14 @@ def check(path):
     """One document, ready for a person or an agent: is it haunted, what is hidden, and the text with the ghosts taken out."""
     path = Path(path)
     data = path.read_bytes()
-    pages, runs = scan(data, ink=True)
-    public = lambda r: {"page": r["page"], "text": r["text"], "how": r["how"], "asks": r["ai"]}
+    pages, runs = scan(data)
+    public = lambda r: {"page": r["page"], "text": r["text"], "how": r["how"], "asks": r["hits"]}
     return {
         "file": str(path),
         "pages": pages,
-        "haunted": any(talks_to_ai(r["ai"]) for r in runs),
-        "ghosts": [public(r) for r in runs if talks_to_ai(r["ai"])],
-        "other_hidden": [public(r) for r in runs if not talks_to_ai(r["ai"]) and not minor(r["text"])],
-        "fragments": sum(1 for r in runs if not talks_to_ai(r["ai"]) and minor(r["text"])),
+        "haunted": any(r["ai"] for r in runs),
+        "ghosts": [public(r) for r in runs if r["ai"]],
+        "other_hidden": [public(r) for r in runs if not r["ai"] and not minor(r["text"])],
+        "fragments": sum(1 for r in runs if not r["ai"] and minor(r["text"])),
         "clean_text": exorcise(data, runs),
     }

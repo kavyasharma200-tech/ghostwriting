@@ -11,7 +11,7 @@ import sys
 from pathlib import Path
 
 from .canary import TRICKS, canary, sentence
-from .scanner import TEXT_SUFFIXES, minor, scan, talks_to_ai
+from .scanner import TEXT_SUFFIXES, minor, scan
 
 SUFFIXES = {".pdf"} | TEXT_SUFFIXES
 
@@ -28,12 +28,12 @@ def documents(paths):
 
 def row(path):
     try:
-        pages, runs = scan(path.read_bytes(), ink=True)
+        pages, runs = scan(path.read_bytes())
     except Exception as e:
         return {"file": str(path), "verdict": "could not read", "ghosts": 0, "other_hidden": 0, "pages": 0,
                 "page": "", "how": "", "asks": "", "says": str(e)[:200]}
-    ghosts = [r for r in runs if talks_to_ai(r["ai"])]
-    other = [r for r in runs if not talks_to_ai(r["ai"]) and not minor(r["text"])]
+    ghosts = [r for r in runs if r["ai"]]
+    other = [r for r in runs if not r["ai"] and not minor(r["text"])]
     first = (ghosts or other or [None])[0]
     return {
         "file": str(path),
@@ -41,7 +41,7 @@ def row(path):
         "ghosts": len(ghosts), "other_hidden": len(other), "pages": pages,
         "page": first["page"] if first else "",
         "how": "; ".join(first["how"]) if first else "",
-        "asks": "; ".join(first["ai"]) if first else "",
+        "asks": "; ".join(first["hits"]) if first else "",
         "says": first["text"][:300] if first else "",
     }
 

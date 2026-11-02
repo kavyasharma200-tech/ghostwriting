@@ -103,7 +103,7 @@ def main():
             try:
                 data = get(f"https://export.arxiv.org/pdf/{p['id']}")
                 rec["bytes"] = len(data)
-                rec["pages"], runs = scan(data)
+                rec["pages"], runs = scan(data, ink=False)
                 # Keep every run that talks to an AI, and a few of the rest (most are figure labels).
                 rec["ai_runs"] = [r for r in runs if r["ai"]]
                 rec["other_runs"] = len(runs) - len(rec["ai_runs"])

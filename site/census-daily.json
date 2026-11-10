@@ -67,5 +67,31 @@
   "pages": 5508,
   "errors": 0,
   "flagged": []
+ },
+ {
+  "day": "2026-11-09",
+  "read": 248,
+  "pages": 6032,
+  "errors": 2,
+  "flagged": [
+   {
+    "id": "2611.12524v1",
+    "title": "EditJudge-Bench: Auditing VLM Image-Edit Judges with Synthetic Ground Truth",
+    "page": 21,
+    "text": "System prompt",
+    "how": [
+     "white on the page"
+    ]
+   },
+   {
+    "id": "2611.12411v1",
+    "title": "PhysOPSD: Code as Privilege for Physically Plausible Video Generation",
+    "page": 13,
+    "text": "System Prompt for Dual Prompt Annotation",
+    "how": [
+     "white on the page"
+    ]
+   }
+  ]
  }
 ]

@@ -163,5 +163,31 @@
   "pages": 5715,
   "errors": 2,
   "flagged": []
+ },
+ {
+  "day": "2026-11-25",
+  "read": 250,
+  "pages": 6269,
+  "errors": 0,
+  "flagged": [
+   {
+    "id": "2611.34760v1",
+    "title": "One Model, Many Modes: Evolving System Prompt Ensembles for Creative Generation",
+    "page": 5,
+    "text": "MS eaviora l diversity searc Select the instruction arthest rom its nearest behavioral neighbor Candidates S-step inner loop eaviorspace JS divergence max–min Candidate pooC ind the nearest eha v i o r Same prompts targe",
+    "how": [
+     "off the page"
+    ]
+   },
+   {
+    "id": "2611.34341v1",
+    "title": "Learning from Unreliable Operator References: Claim-Level Rewards for Customer Support Agents",
+    "page": 15,
+    "text": "Customer back-end Applications, offers live in prod · recorded offline Knowledge base Product cards, FAQ entries Topic files Customer data tool List and read records Knowledge tool Grep-style search Read full card by nam",
+    "how": [
+     "invisible render mode"
+    ]
+   }
+  ]
  }
 ]
